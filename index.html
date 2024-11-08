@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body onload="lerPokedex(1)">
-    <div class="pokedex">
+    <div class="pokedex" id="pokedex">
       <div class="container">
         <div class="info">
           <form name="enviarPokemon" method="post" action="">
@@ -27,9 +27,12 @@
         <div class="container-img">
           <img src="" alt="Imagem do Pokmeon" id="pokemonImagem" />
         </div>
+        <div id="tipos" class="tipos">
+          ...
+        </div>
         <div class="container-botoes">
-          <button onclick="pokemonAnterior()"><< Anterior</button>
-          <button onclick="pokemonDepois()">Próximo >></button>
+          <button id="antes" onclick="pokemonAnterior()"><< Anterior</button>
+          <button id="depois" onclick="pokemonDepois()">Próximo >></button>
         </div>
       </div>
     </div>
