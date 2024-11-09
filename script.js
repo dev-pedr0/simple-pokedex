@@ -2,6 +2,7 @@ function lerPokedex(id) {
   //console.log(id);
   fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
     .then((resposta) => {
+      console.log(resposta);
       if (!resposta.ok) {
         throw new Error("Não foi possível buscar os dados");
       }
@@ -153,7 +154,9 @@ function lerPokedex(id) {
 function selecionarId() {
   let pokemonId = document.enviarPokemon.pokemonId.value;
   pokemonId = Number(pokemonId) <= 1 ? 1 : Number(pokemonId);
-  pokemonId = Number(pokemonId) >= 898 ? 898 : Number(pokemonId);
+  if(pokemonId >= 1026 && pokemonId <= 10000) {
+    pokemonId = 10001;
+  }
   lerPokedex(pokemonId);
 }
 
@@ -166,7 +169,10 @@ function pokemonAnterior() {
 
 function pokemonDepois() {
   let pokemonId = document.enviarPokemon.pokemonId.value;
-  pokemonId = Number(pokemonId) + 1 >= 898 ? 898 : Number(pokemonId) + 1;
+  pokemonId = Number(pokemonId) + 1;
+  if(pokemonId >= 1026 && pokemonId <= 10000) {
+    pokemonId = 10001;
+  }
   document.enviarPokemon.pokemonId.value = pokemonId;
   lerPokedex(pokemonId);
 }
