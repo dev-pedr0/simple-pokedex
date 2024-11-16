@@ -1,5 +1,6 @@
 const nomeInput = document.getElementById("pokemonNome");
 const idInput = document.getElementById("pokemonId");
+const ulNomes = document.querySelector("#container-sugestoes ul");
 
 function lerPokedex(id) {
   //console.log(id);
@@ -22,6 +23,8 @@ function lerPokedex(id) {
       //console.log(pokemonName);
       nomeInput.value = pokemonName.toUpperCase();
       idInput.value = pokemonOrder;
+
+      ulNomes.innerHTML = "";
 
       const tipos = document.getElementById("tipos");
       tipos.innerHTML = "";
@@ -183,6 +186,7 @@ function pokemonDepois() {
 }
 
 function pegarNome() {
+  ulNomes.innerHTML = "";
   lerPokedex(nomeInput.value.toLowerCase());
 }
 
@@ -213,7 +217,6 @@ function listaNomesPokemon() {
 }
 
 function preencherContainerSugestoes (lista) {
-  const ulNomes = document.querySelector("#container-sugestoes ul");
   const textoDigitado = nomeInput.value.toLowerCase();
   console.log(textoDigitado);
   console.log(lista);
