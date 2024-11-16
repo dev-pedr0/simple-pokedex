@@ -1,8 +1,11 @@
+const nomeInput = document.getElementById("pokemonNome");
+const idInput = document.getElementById("pokemonId");
+
 function lerPokedex(id) {
   //console.log(id);
   fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
     .then((resposta) => {
-      console.log(resposta);
+      //console.log(resposta);
       if (!resposta.ok) {
         throw new Error("Não foi possível buscar os dados");
       }
@@ -15,8 +18,10 @@ function lerPokedex(id) {
       img.setAttribute("src", pokemonImg);
 
       const pokemonName = data.name;
-      const nome = document.getElementById("nome");
-      nome.innerHTML = pokemonName.toUpperCase();
+      const pokemonOrder = data.id;
+      //console.log(pokemonName);
+      nomeInput.value = pokemonName.toUpperCase();
+      idInput.value = pokemonOrder;
 
       const tipos = document.getElementById("tipos");
       tipos.innerHTML = "";
@@ -152,7 +157,7 @@ function lerPokedex(id) {
 }
 
 function selecionarId() {
-  let pokemonId = document.enviarPokemon.pokemonId.value;
+  let pokemonId = idInput.value;
   pokemonId = Number(pokemonId) <= 1 ? 1 : Number(pokemonId);
   if(pokemonId >= 1026 && pokemonId <= 10000) {
     pokemonId = 10001;
@@ -161,25 +166,73 @@ function selecionarId() {
 }
 
 function pokemonAnterior() {
-  let pokemonId = document.enviarPokemon.pokemonId.value;
+  let pokemonId = idInput.value;
   pokemonId = Number(pokemonId) - 1 <= 1 ? 1 : Number(pokemonId) - 1;
-  document.enviarPokemon.pokemonId.value = pokemonId;
+  idInput.value = pokemonId;
   lerPokedex(pokemonId);
 }
 
 function pokemonDepois() {
-  let pokemonId = document.enviarPokemon.pokemonId.value;
+  let pokemonId = idInput.value;
   pokemonId = Number(pokemonId) + 1;
   if(pokemonId >= 1026 && pokemonId <= 10000) {
     pokemonId = 10001;
   }
-  document.enviarPokemon.pokemonId.value = pokemonId;
+  idInput.value = pokemonId;
   lerPokedex(pokemonId);
 }
 
-const formulario = document.getElementById("pokemonId");
-formulario.addEventListener("keydown", function (evento) {
+function pegarNome() {
+  lerPokedex(nomeInput.value.toLowerCase());
+}
+
+idInput.addEventListener("keydown", function (evento) {
   if (evento.key === "Enter") {
     evento.preventDefault();
   }
 });
+
+
+let listaNomes = [];
+
+function listaNomesPokemon() {
+  fetch(`https://pokeapi.co/api/v2/pokemon?limit=1302&offset=0`)
+    .then((resposta) => {
+      if (!resposta.ok) {
+        throw new Error("Não foi possível buscar os dados");
+      }
+      return resposta.json();
+    })
+    .then((data) => {
+      //console.log(data.results);
+      listaNomes = data.results.map((pokemon) => pokemon.name);
+      //console.log(listaNomes);
+      preencherContainerSugestoes(listaNomes);
+    })
+    .catch((error) => console.error(error));
+}
+
+function preencherContainerSugestoes (lista) {
+  const ulNomes = document.querySelector("#container-sugestoes ul");
+  const textoDigitado = nomeInput.value.toLowerCase();
+  console.log(textoDigitado);
+  console.log(lista);
+  //console.log(ulNomes);
+  ulNomes.innerHTML = "";
+  const sugestoesFiltradas = lista.filter(sugestao => sugestao.startsWith(textoDigitado));
+  console.log(sugestoesFiltradas);
+  sugestoesFiltradas.forEach((nome) => {
+    const li = document.createElement("li");
+    li.textContent = nome;
+    li.addEventListener("click", () => {
+      nomeInput.value = nome;
+      ulNomes.innerHTML = "";
+      pegarNome();
+    });
+    ulNomes.appendChild(li);
+  });  
+}
+
+nomeInput.addEventListener("keyup", listaNomesPokemon);
+
+listaNomesPokemon();

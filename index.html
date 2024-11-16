@@ -20,9 +20,20 @@
               onkeyup="selecionarId()"
             />
           </form>
-          <div class="nome">
-            <b id="nome"></b>
-          </div>
+          <form name="enviarNome" method="post" action="">
+            <input
+              type="text"
+              id="pokemonNome"
+              class="nome"
+              value="BULBASAUR"
+              onkeyup="pegarNome()"
+            />
+            <div id="container-sugestoes">
+              <ul>
+
+              </ul>
+            </div>
+          </form>
         </div>
         <div class="container-img">
           <img src="" alt="Imagem do Pokmeon" id="pokemonImagem" />
