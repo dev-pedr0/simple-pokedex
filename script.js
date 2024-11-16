@@ -237,5 +237,3 @@ function preencherContainerSugestoes (lista) {
 }
 
 nomeInput.addEventListener("keyup", listaNomesPokemon);
-
-listaNomesPokemon();
